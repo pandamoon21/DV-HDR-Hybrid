@@ -4,7 +4,7 @@ This script will make a hybrid between Dolby Vision (DV) and HDR videos
 ## Binaries
 
 * [dovi_tool](https://github.com/quietvoid/dovi_tool)
-* [hdr10plus_tool](https://github.com/quietvoid/hdr10plus_tool)
+* [hdr10plus_tool](https://github.com/quietvoid/hdr10plus_tool/releases/tag/1.2.2)
 * [FFmpeg](https://ffmpeg.org/ffmpeg.html)
 * [MKVToolNix](https://www.videohelp.com/software/MKVToolNix)
 
