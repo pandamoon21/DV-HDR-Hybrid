@@ -27,10 +27,29 @@ mkvmergeexe = dirPath + '/mkvmerge.exe'
 
 output = str(args.output)
 
-print("\nDV.HDR10 .....")
-subprocess.run(f'{ffmpegexe} -i dv.mkv -an -c:v copy -f hevc dv.hevc', shell=True)
+print("\nDV.HDR .....")
+subprocess.run(f'{mkvmergeexe} -o audiosubs.mka  --no-video hdr10.mkv', shell=True) 
+subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i dv.mkv -an -c:v copy -f hevc dv.hevc', shell=True)
 subprocess.run(f'{dvexe} extract-rpu dv.hevc', shell=True) 
-subprocess.run(f'{ffmpegexe} -i hdr10.mkv -c:v copy hdr10.hevc', shell=True)  
+subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10.mkv -c:v copy hdr10.hevc', shell=True)  
 subprocess.run(f'{dvexe} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.hevc', shell=True) 
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.mkv', 'dvhdr.hevc'])
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.mkv', 'dvhdr.hevc', 'audiosubs.mka'])
+print("\nAll Done .....")    
+
+
+print("\nDo you want to delete the Extra Files : Press 1 for yes , 2 for no")
+delete_choice = int(input("Enter Response : "))
+
+if delete_choice == 1:
+    os.remove("dv.hevc")
+    os.remove("hdr10.hevc")
+    os.remove("RPU.bin")
+    os.remove("dvhdr.hevc")
+    os.remove("audiosubs.mka")
+    try:    
+        os.remove("en.srt")
+    except:
+        pass
+else:
+    pass
 
