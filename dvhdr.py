@@ -33,7 +33,7 @@ subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i dv.mkv -an -c:
 subprocess.run(f'{dvexe} -m 3 extract-rpu dv.hevc', shell=True) 
 subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10.mkv -c:v copy hdr10.hevc', shell=True)  
 subprocess.run(f'{dvexe} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.hevc', shell=True) 
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.mkv', 'dvhdr.hevc', 'audiosubs.mka'])
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr.hevc', 'audiosubs.mka'])
 print("\nAll Done .....")    
 
 
