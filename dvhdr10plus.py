@@ -34,7 +34,7 @@ subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10plus.mkv 
 subprocess.run(f'{hdrplusexe} extract hdr10plus.hevc -o hdr10plus_manifest.json', shell=True) 
 subprocess.run(f'{dvexe} generate -j default_cmv40.json --hdr10plus-json hdr10plus_manifest.json -o dvhdr10plus.bin', shell=True) 
 subprocess.run(f'{dvexe} inject-rpu -i hdr10plus.hevc --rpu-in dvhdr10plus.bin -o dvhdr10plus.hevc', shell=True)
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.mkv', 'dvhdr10plus.hevc', 'audiosubs.mka'])
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr10plus.hevc', 'audiosubs.mka'])
 print("\nAll Done .....")    
 
 
