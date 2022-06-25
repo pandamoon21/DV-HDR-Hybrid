@@ -27,13 +27,18 @@ mkvmergeexe = dirPath + '/mkvmerge.exe'
 
 output = str(args.output)
 
-print("\nDV.HDR .....")
-subprocess.run(f'{mkvmergeexe} -o audiosubs.mka  --no-video hdr10.mkv', shell=True) 
+print("\nExtracting video DV and generating BIN DV Profile 8.....")
 subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i dv.mkv -an -c:v copy -f hevc dv.hevc', shell=True)
 subprocess.run(f'{dvexe} -m 3 extract-rpu dv.hevc', shell=True) 
+print("\nAll Done .....")
+print("\nExtracting video HDR.....")
 subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10.mkv -c:v copy hdr10.hevc', shell=True)  
+print("\nAll Done .....") 
+print("\nMerger DV Profile 8 and HDR.....")
 subprocess.run(f'{dvexe} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.hevc', shell=True) 
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr.hevc', 'audiosubs.mka'])
+print("\nAll Done .....")
+print("\nMux.....")
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-WKS.mkv', 'dvhdr.hevc', '--no-video', 'hdr10.mkv'])
 print("\nAll Done .....")    
 
 
