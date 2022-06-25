@@ -38,7 +38,7 @@ print("\nMerger DV Profile 8 and HDR.....")
 subprocess.run(f'{dvexe} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.hevc', shell=True) 
 print("\nAll Done .....")
 print("\nMux.....")
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-WKS.mkv', 'dvhdr.hevc', '--no-video', 'hdr10.mkv'])
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr.hevc', '--no-video', 'hdr10.mkv'])
 print("\nAll Done .....")    
 
 
