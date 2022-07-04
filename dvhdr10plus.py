@@ -28,13 +28,16 @@ mkvmergeexe = dirPath + '/mkvmerge.exe'
 
 output = str(args.output)
 
-print("\nDV.HDR .....")
-subprocess.run(f'{mkvmergeexe} -o audiosubs.mka  --no-video hdr10plus.mkv', shell=True)  
+print("\nExtracting video HDR and generating BIN DV Profile 8.....")
 subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10plus.mkv -c:v copy hdr10plus.hevc', shell=True)  
 subprocess.run(f'{hdrplusexe} extract hdr10plus.hevc -o hdr10plus_manifest.json', shell=True) 
 subprocess.run(f'{dvexe} generate -j default_cmv40.json --hdr10plus-json hdr10plus_manifest.json -o dvhdr10plus.bin', shell=True) 
+print("\nAll Done .....")
+print("\nMerger DV Profile 8 and HDR.....")
 subprocess.run(f'{dvexe} inject-rpu -i hdr10plus.hevc --rpu-in dvhdr10plus.bin -o dvhdr10plus.hevc', shell=True)
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr10plus.hevc', 'audiosubs.mka'])
+print("\nAll Done .....")
+print("\nMux.....")
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr10plus.hevc', '--no-video', 'hdr10plus.mkv'])
 print("\nAll Done .....")    
 
 
@@ -46,7 +49,6 @@ if delete_choice == 1:
     os.remove("dvhdr10plus.bin")
     os.remove("dvhdr10plus.hevc")
     os.remove("hdr10plus_manifest.json")
-    os.remove("audiosubs.mka")
     try:    
         os.remove("en.srt")
     except:
