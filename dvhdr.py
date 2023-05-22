@@ -53,7 +53,7 @@ subprocess.run(f'{dovi_tool} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.
 print("\nAll Done .....")
 
 print("\nMux.....")
-subprocess.run([mkvmerge, '--ui-language' ,'en', '--output', output + f'.DV.HDR.H.265-{group}.mkv', 'dvhdr.hevc', '--no-video', {input_hdr}])
+subprocess.run([str(mkvmerge), '--ui-language' ,'en', '--output', f'{output}.DV.HDR.H.265-{group}.mkv', 'dvhdr.hevc', '--no-video', {input_hdr}])
 print("\nAll Done .....")    
 
 print("\nDeleting unused files...")
