@@ -13,7 +13,10 @@ print("by -∞WKS∞-#3982")
 print("Required files : dovi_tool.exe, mkvmerge.exe, ffmpeg.exe\n")
 
 arguments = argparse.ArgumentParser()
+arguments.add_argument("-ih", '--input-hdr', dest="input_hdr", help="Specify input hdr file name.", required=True)
+arguments.add_argument("-id", '--input-dv', dest="input_dv", help="Specify input dv file name.", required=True)
 arguments.add_argument("-o", '--output', dest="output", help="Specify output file name with no extension", required=True)
+arguments.add_argument("-gr", '--group', dest="group", help="Specify group name for output", required=False, default="GRP")
 args = arguments.parse_args()
 
 currentFile = __file__
@@ -26,35 +29,26 @@ ffmpegexe = dirPath + '/ffmpeg.exe'
 mkvmergeexe = dirPath + '/mkvmerge.exe'
 
 output = str(args.output)
+input_hdr = str(args.input_hdr)
+input_dv = str(args.input_dv)
+group = str(args.group)
 
 print("\nExtracting video DV and generating BIN DV Profile 8.....")
-subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i dv.mkv -an -c:v copy -f hevc dv.hevc', shell=True)
+subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i {input_dv} -an -c:v copy -f hevc dv.hevc', shell=True)
 subprocess.run(f'{dvexe} -m 3 extract-rpu dv.hevc', shell=True) 
 print("\nAll Done .....")
 print("\nExtracting video HDR.....")
-subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i hdr10.mkv -c:v copy hdr10.hevc', shell=True)  
+subprocess.run(f'{ffmpegexe} -hide_banner -loglevel warning -y -i {input_hdr} -c:v copy hdr10.hevc', shell=True)  
 print("\nAll Done .....") 
 print("\nMerger DV Profile 8 and HDR.....")
 subprocess.run(f'{dvexe} inject-rpu -i hdr10.hevc --rpu-in RPU.bin -o dvhdr.hevc', shell=True) 
 print("\nAll Done .....")
 print("\nMux.....")
-subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output +'.DV.HDR.H.265-GRP.mkv', 'dvhdr.hevc', '--no-video', 'hdr10.mkv'])
+subprocess.run([mkvmergeexe, '--ui-language' ,'en', '--output', output + f'.DV.HDR.H.265-{group}.mkv', 'dvhdr.hevc', '--no-video', 'hdr10.mkv'])
 print("\nAll Done .....")    
-
-
-print("\nDo you want to delete the Extra Files : Press 1 for yes , 2 for no")
-delete_choice = int(input("Enter Response : "))
-
-if delete_choice == 1:
-    os.remove("dv.hevc")
-    os.remove("hdr10.hevc")
-    os.remove("RPU.bin")
-    os.remove("dvhdr.hevc")
-    os.remove("audiosubs.mka")
-    try:    
-        os.remove("en.srt")
-    except:
-        pass
-else:
-    pass
+print("\nDeleting unused files...")
+os.remove("dv.hevc")
+os.remove("hdr10.hevc")
+os.remove("RPU.bin")
+os.remove("dvhdr.hevc")
 
